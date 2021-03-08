@@ -31,10 +31,10 @@ func view_currently_selected_governor() {
 	cmd := exec.Command("cat", "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor")
 	otpt, err := cmd.Output()
 	if err != nil {
-		fmt.Printf(FR_RED("[ ! ]") + " " + "Currently selected CPU governor could not be read")
+		fmt.Printf(FR_RED("[ \u2717 ]") + " " + "Currently selected CPU governor could not be read")
 	} else {
 		var curtgvnr string = string(otpt)[0 : len(otpt)-1]
-		fmt.Printf(FR_GREEN("[ ✓ ]") + " " + FR_YELLOW(curtgvnr) + " " + "is the currently selected CPU governor" + "\n")
+		fmt.Printf(FR_GREEN("[ \u2713 ]") + " " + FR_YELLOW(curtgvnr) + " " + "is the currently selected CPU governor" + "\n")
 	}
 }
 
@@ -42,10 +42,10 @@ func list_available_governors() {
 	cmd := exec.Command("cat", "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors")
 	otpt, err := cmd.Output()
 	if err != nil {
-		fmt.Printf(FR_RED("[ ! ]") + " " + "Available CPU governors could not be read" + "\n")
+		fmt.Printf(FR_RED("[ \u2717 ]") + " " + "Available CPU governors could not be read" + "\n")
 	} else {
 		var gvnrlist []string = strings.Fields(string(otpt))
-		fmt.Printf(FR_GREEN("[ ✓ ]"+" "+"Available CPU governors were successfully read") + "\n")
+		fmt.Printf(FR_GREEN("[ \u2713 ]"+" "+"Available CPU governors were successfully read") + "\n")
 		for indx := 0; indx < len(gvnrlist); indx++ {
 			fmt.Println(GN_TEXT(FR_YELLOW(gvnrlist[indx])))
 		}
@@ -57,7 +57,7 @@ func set_governor_by_name(gvnrname string) {
 	cmd := exec.Command("cat", "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors")
 	otpt, err := cmd.Output()
 	if err != nil {
-		fmt.Printf(FR_RED("[ ! ]") + " " + "Available governors could not be read" + "\n")
+		fmt.Printf(FR_RED("[ \u2717 ]") + " " + "Available governors could not be read" + "\n")
 	} else {
 		var gvnrlist []string = strings.Fields(string(otpt))
 		for indx := 0; indx < len(gvnrlist); indx++ {
@@ -71,32 +71,32 @@ func set_governor_by_name(gvnrname string) {
 		cmd := exec.Command("cat", "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor")
 		otpt, err := cmd.Output()
 		if err != nil {
-			fmt.Printf(FR_RED("[ ! ]") + " " + "Could not compare provided CPU governor name with the existing" + "\n")
+			fmt.Printf(FR_RED("[ \u2717 ]") + " " + "Could not compare provided CPU governor name with the existing" + "\n")
 		} else {
 			var crntgvnr string = string(otpt)[0 : len(otpt)-1]
 			if gvnrname == crntgvnr {
-				fmt.Printf(FR_RED("[ ! ]") + " " + FR_YELLOW(gvnrname) + " " + "is already your current CPU governor" + "\n")
+				fmt.Printf(FR_RED("[ \u2717 ]") + " " + FR_YELLOW(gvnrname) + " " + "is already your current CPU governor" + "\n")
 			} else {
 				cmd := exec.Command("bash", "-c", "echo "+gvnrname+" | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor")
 				otpt, err := cmd.Output()
 				if err != nil {
-					fmt.Printf(FR_RED("[ ! ]") + " " + "Provided CPU governor could not be selected" + "\n")
+					fmt.Printf(FR_RED("[ \u2717 ]") + " " + "Provided CPU governor could not be selected" + "\n")
 				} else {
 					if string(otpt)[0:len(otpt)-1] == gvnrname {
-						fmt.Printf(FR_GREEN("[ ✓ ]") + " " + FR_YELLOW(gvnrname) + " " + "replaces" + " " + FR_YELLOW(crntgvnr) + " " + "as your current CPU governor" + "\n")
+						fmt.Printf(FR_GREEN("[ \u2713 ]") + " " + FR_YELLOW(gvnrname) + " " + "replaces" + " " + FR_YELLOW(crntgvnr) + " " + "as your current CPU governor" + "\n")
 					} else {
-						fmt.Printf(FR_RED("[ ! ]") + " " + "Outcome of CPU governor change could not be verified" + "\n")
+						fmt.Printf(FR_RED("[ \u2717 ]") + " " + "Outcome of CPU governor change could not be verified" + "\n")
 					}
 				}
 			}
 		}
 	} else {
-		fmt.Printf(FR_RED("[ ! ]") + " " + "Provided CPU governor name could not be verified" + "\n")
+		fmt.Printf(FR_RED("[ \u2717 ]") + " " + "Provided CPU governor name could not be verified" + "\n")
 	}
 }
 
 func help_and_support() {
-	fmt.Printf(FR_BLUE("[ i ] ") + FR_GREEN("SWTICHEROO") + " - Run things fast or save some juice!" + "\n" +
+	fmt.Printf(FR_BLUE("[ # ] ") + FR_GREEN("SWTICHEROO") + " - Run things fast or save some juice!" + "\n" +
 		GN_TEXT("© 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>") + "\n" +
 		GN_TEXT(FR_YELLOW("-crnt")+" - "+"Know the currently selected CPU governor") + "\n" +
 		GN_TEXT(FR_YELLOW("-help")+" - "+"Read about the scriplet and its creator") + "\n" +
