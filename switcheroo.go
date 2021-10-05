@@ -31,7 +31,7 @@ func view_currently_selected_governor() {
 	cmd := exec.Command("cat", "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor")
 	otpt, err := cmd.Output()
 	if err != nil {
-		fmt.Printf(FR_RED("[ \u2717 ]") + " " + "Currently selected CPU governor could not be read")
+		fmt.Printf(FR_RED("[ \u2717 ]") + " " + "Currently selected CPU governor could not be read" + "\n")
 	} else {
 		var curtgvnr string = string(otpt)[0 : len(otpt)-1]
 		fmt.Printf(FR_GREEN("[ \u2713 ]") + " " + FR_YELLOW(curtgvnr) + " " + "is the currently selected CPU governor" + "\n")
